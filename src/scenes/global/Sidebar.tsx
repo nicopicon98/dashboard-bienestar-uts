@@ -138,7 +138,7 @@ const SideBar = () => {
             </Typography>
             <Item
               title="Gestion de citas"
-              to="/calendar"
+              to="/team"
               icon={<CalendarMonthOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -152,7 +152,7 @@ const SideBar = () => {
             </Typography>
             <Item
               title="Gestion de horarios"
-              to="/bar"
+              to="/calendar"
               icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

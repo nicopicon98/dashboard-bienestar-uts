@@ -3,15 +3,24 @@ import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
 
 interface Props {
-  title : string; 
+  title: string;
   subtitle: string;
   increase: string;
-  progress: number, 
+  progress?: number;
   icon: JSX.Element;
   increaseVisible?: boolean;
+  iconVariant?: JSX.Element;
 }
 
-const StatBox = ({ title, subtitle, icon, progress, increase, increaseVisible = true }: Props) => {
+const StatBox = ({
+  title,
+  subtitle,
+  icon,
+  progress = 0.75,
+  increase,
+  increaseVisible = true,
+  iconVariant,
+}: Props) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -28,9 +37,12 @@ const StatBox = ({ title, subtitle, icon, progress, increase, increaseVisible = 
             {title}
           </Typography>
         </Box>
-        {increaseVisible && <Box>
-          <ProgressCircle progress={progress} />
-        </Box>}
+        {iconVariant && <Box>{iconVariant}</Box>}
+        {increaseVisible && (
+          <Box>
+            <ProgressCircle progress={progress} />
+          </Box>
+        )}
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
         <Typography variant="h5" sx={{ color: colors.greenAccent[500] }}>

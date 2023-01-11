@@ -2,26 +2,33 @@ import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
-import GeographyChart from "../../components/GeographyChart";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
-import { useEffect, useState } from "react";
 import useNextAppointmentTimer from "../../hooks/useNextAppointmentTimer";
+import SmsFailedOutlinedIcon from "@mui/icons-material/SmsFailedOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import StatBoxVariant from "../../components/StatBoxVariant";
+import PieChart from "../../components/PieChart";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const startStr = "2022/12/21";
+  const startStr = "2022/12/28";
   const franja = "16:00 - 17:00";
-  const franjaStart = franja.slice(0, 5)
-  const { nxtAppmtTmrState: { formatted } } = useNextAppointmentTimer(`${startStr} ${franjaStart}:00`);
+  const franjaStart = franja.slice(0, 5);
+  const {
+    nxtAppmtTmrState: { formatted },
+  } = useNextAppointmentTimer(`${startStr} ${franjaStart}:00`);
+  const startStrLastAppt = "2022/12/27";
+  const franjaLastAppt = "16:00 - 17:00";
+  const joinedLastApptInfo = `${startStrLastAppt} - ${franjaStart}`;
+  let iconVariant = <SmsFailedOutlinedIcon color="error" fontSize="large" />;
+  const attended = true;
+  if (attended) {
+    iconVariant = (
+      <CheckCircleOutlineOutlinedIcon color="success" fontSize="large" />
+    );
+  }
 
   return (
     <Box m="20px">
@@ -40,7 +47,7 @@ const Dashboard = () => {
             }}
           >
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
+            DESCARGAR REPORTE
           </Button>
         </Box>
       </Box>
@@ -66,8 +73,7 @@ const Dashboard = () => {
             progress={0.75}
             increase={formatted}
             increaseVisible={false}
-            icon={<NextAppointmentPhoto img={'../../assets/user.png'} />
-            }
+            icon={<NextAppointmentPhoto img={"../../assets/user.png"} />}
           />
         </Box>
         <Box
@@ -77,17 +83,15 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          {/* <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress={0.50}
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
+          <StatBox
+            title="Sergio Andres Gomez"
+            subtitle="Ultima cita"
+            progress={0.5}
+            increase={joinedLastApptInfo}
+            increaseVisible={false}
+            icon={<NextAppointmentPhoto img={"../../assets/user.png"} />}
+            iconVariant={iconVariant}
+          />
         </Box>
         <Box
           gridColumn="span 3"
@@ -96,17 +100,12 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          {/* <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress={0.30}
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            } 
-          />*/}
+          <StatBoxVariant
+            subTitle="Citas ultimo mes"
+            citas={80}
+            citasAccepted={70}
+            citasRejected={10}
+          />
         </Box>
         <Box
           gridColumn="span 3"
@@ -115,25 +114,16 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          {/* <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress={0.80}
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          /> */}
+          <StatBoxVariant
+            subTitle="Citas proximas"
+            citas={114}
+            citasAccepted={100}
+            citasRejected={14}
+          />
         </Box>
 
         {/* ROW 2 */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          bgcolor={colors.primary[400]}
-        >
+        {/* <Box gridColumn="span 8" gridRow="span 2" bgcolor={colors.primary[400]}>
           <Box
             mt="25px"
             p="0 30px"
@@ -168,9 +158,20 @@ const Dashboard = () => {
           <Box height="250px" m="-20px 0 0 0">
             <LineChart isDashboard={true} />
           </Box>
+        </Box> */}
+        <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          bgcolor={colors.primary[400]}
+          p="30px"
+        >
+          <Header title="Citas" mb={"0px"} subtitle="Ultimo mes" />
+          <Box height="30vh">
+            <PieChart />
+          </Box>
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           bgcolor={colors.primary[400]}
           overflow="auto"
@@ -221,7 +222,7 @@ const Dashboard = () => {
         </Box>
 
         {/* ROW 3 */}
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           bgcolor={colors.primary[400]}
@@ -279,7 +280,7 @@ const Dashboard = () => {
           <Box height="200px">
             <GeographyChart isDashboard={true} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
@@ -300,8 +301,7 @@ const NextAppointmentPhoto = ({ img }: Props) => {
         style={{ cursor: "pointer", borderRadius: "50%" }}
       />
     </Box>
-  )
-
-}
+  );
+};
 
 export default Dashboard;

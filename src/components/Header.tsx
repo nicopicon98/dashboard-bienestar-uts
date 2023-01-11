@@ -4,13 +4,14 @@ import { tokens } from "../theme";
 interface HeaderInterface {
   title: string;
   subtitle: string;
+  mb?: string;
 }
 
-const Header = ({ title, subtitle }: HeaderInterface) => {
+const Header = ({ title, subtitle, mb = "30px" }: HeaderInterface) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <Box mb="30px">
+    <Box mb={mb}>
       <Typography
         variant="h2"
         color={colors.grey[100]}
